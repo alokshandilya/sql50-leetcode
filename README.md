@@ -2,7 +2,7 @@
 
 This repository contains solutions to the **Top SQL 50 Study Plan** from [LeetCode](https://leetcode.com/studyplan/top-sql-50/) using **PostgreSQL**. Each problem is linked to its corresponding LeetCode page, and solutions are provided in PostgreSQL syntax.
 
-## 1. [Recyclable and Low Fat Products (1757)](https://leetcode.com/problems/recyclable-and-low-fat-products/)
+#### 1. [Recyclable and Low Fat Products (1757)](https://leetcode.com/problems/recyclable-and-low-fat-products/)
 
 ```sql
 SELECT
@@ -15,7 +15,7 @@ WHERE
     recyclable = 'Y';
 ```
 
-## 2. [Find Customer Referee (584)](https://leetcode.com/problems/find-customer-referee/)
+#### 2. [Find Customer Referee (584)](https://leetcode.com/problems/find-customer-referee/)
 
 ```sql
 SELECT
@@ -36,6 +36,35 @@ SELECT
         AS result;
 
 -- output: NULL
+```
+
+#### 3. [Big Countries (595)](https://leetcode.com/problems/big-countries/)
+
+```sql
+SELECT
+    name,
+    population,
+    area
+FROM
+    World
+WHERE
+    area >= 3000000
+    OR
+    population >= 25000000;
+```
+
+#### 4. [Article Views I (1148)](https://leetcode.com/problems/article-views-i/)
+
+```sql
+SELECT
+    DISTINCT
+        author_id AS id
+FROM
+    Views
+WHERE
+    author_id = viewer_id
+ORDER BY
+    id;  -- or 1 (1st selected column) author_id/id)
 ```
 
 ## Contributing
