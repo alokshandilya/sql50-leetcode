@@ -320,6 +320,42 @@ GROUP BY
     p.product_id
 ```
 
+#### 17. [Project Employees I (1075)](https://leetcode.com/problems/project-employees-i)
+
+```sql
+SELECT
+    p.project_id,
+    ROUND(
+        AVG(e.experience_years), 2
+    ) AS average_years
+FROM
+    Project p
+NATURAL JOIN
+    Employee e
+GROUP BY
+    p.project_id
+```
+
+#### 18. [Percentage of Users Attended a Contest (1633)](https://leetcode.com/problems/percentage-of-users-attended-a-contest)
+
+```sql
+SELECT
+    r.contest_id,
+    ROUND(
+        COUNT(r.user_id)::decimal / (SELECT COUNT(*) FROM Users) * 100.0,
+        2
+    ) AS percentage
+FROM
+    Users u
+NATURAL JOIN
+    Register r
+GROUP BY
+    r.contest_id
+ORDER BY
+    percentage DESC,
+    contest_id
+```
+
 ## Contributing
 
 If you'd like to contribute, feel free to fork this repository and submit a pull request with your solutions or improvements. Make sure to follow the same format for consistency.
