@@ -244,7 +244,9 @@ WHERE
         HAVING
             COUNT(*) >= 5
     )
+```
 
+```sql
 -- using join
 SELECT
     e1.name
