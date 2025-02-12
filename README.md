@@ -67,6 +67,26 @@ ORDER BY
     id;  -- or 1 (1st selected column) author_id/id)
 ```
 
+#### 5. [Invalid Tweets (1683)](https://leetcode.com/problems/invalid-tweets/)
+
+```sql
+SELECT
+    tweet_id
+FROM
+    Tweets
+WHERE
+    LENGTH(content) > 15;
+```
+
+> [PostgreSQL string functions](https://www.postgresql.org/docs/current/functions-string.html) docs  
+> The `LENGTH()` function returns the length of a string in characters.
+> ```
+>  length (text) → integer
+>      Returns the number of characters in the string.
+>      length('jose') → 4
+>  ```
+
+
 ## Contributing
 
 If you'd like to contribute, feel free to fork this repository and submit a pull request with your solutions or improvements. Make sure to follow the same format for consistency.
