@@ -266,9 +266,59 @@ HAVING
 #### 14. [Confirmation Rate (1934)](https://leetcode.com/problems/confirmation-rate/)
 
 ```sql
-
+SELECT
+    s.user_id,
+    ROUND(
+        COUNT(*) FILTER (WHERE c.action='confirmed')::decimal / COUNT(*),
+        2
+    ) AS confirmation_rate
+FROM
+    Signups s
+LEFT JOIN
+    Confirmations c
+    ON
+        c.user_id = s.user_id
+GROUP BY
+    s.user_id
 ```
 
+## Basic Aggregate Functions
+
+#### 15. [Not Boring Movies (620)](https://leetcode.com/problems/not-boring-movies)
+
+```sql
+SELECT
+    *
+FROM
+    Cinema
+WHERE
+    id % 2 = 1
+    AND
+    description <> 'boring'
+ORDER BY
+    rating DESC;
+```
+
+#### 16. [Average Selling Price (1251)](https://leetcode.com/problems/average-selling-price)
+
+```sql
+SELECT
+    p.product_id,
+    COALESCE(
+        ROUND(
+            SUM(u.units * p.price)::decimal / SUM(u.units), 2
+        ), 0
+    ) AS average_price
+FROM
+    Prices p
+LEFT JOIN
+    UnitsSold u
+    ON u.product_id = p.product_id
+    AND
+    u.purchase_date BETWEEN p.start_date AND p.end_date
+GROUP BY
+    p.product_id
+```
 
 ## Contributing
 
