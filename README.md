@@ -177,6 +177,99 @@ GROUP BY
 >
 > - [PostgreSQL numeric data types](https://www.postgresql.org/docs/current/datatype-numeric.html) docs
 
+#### 11. [Employee Bonus (577)](https://leetcode.com/problems/employee-bonus/)
+
+```sql
+SELECT
+    e.name,
+    b.bonus
+FROM
+    Employee e
+LEFT JOIN
+    Bonus b
+        ON b.empId = e.empId
+WHERE
+    b.bonus < 1000
+    OR
+    b.bonus IS NULL;
+```
+
+#### 12. [Students and Examinations (1280)](https://leetcode.com/problems/students-and-examinations/)
+
+```sql
+SELECT
+    st.student_id,
+    st.student_name,
+    su.subject_name,
+    COUNT(e.subject_name)
+        AS attended_exams
+FROM
+    Students st
+CROSS JOIN
+    Subjects su
+LEFT JOIN
+    Examinations e
+    ON
+        e.student_id = st.student_id
+        AND
+        e.subject_name = su.subject_name
+GROUP BY
+    st.student_id,
+    st.student_name,
+    su.subject_name
+ORDER BY
+    st.student_id,
+    su.subject_name;
+```
+
+#### 13. [Managers with at Least 5 Direct Reports (570)](https://leetcode.com/problems/managers-with-at-least-5-direct-reports)
+
+```sql
+-- using subquery
+SELECT
+    name
+FROM
+    Employee
+WHERE
+    id IN (
+        SELECT
+            managerId
+        FROM
+            Employee
+        WHERE
+            managerId
+                IS NOT NULL
+        GROUP BY
+            managerId
+        HAVING
+            COUNT(*) >= 5
+    )
+
+-- using join
+SELECT
+    e1.name
+FROM
+    Employee e1
+JOIN
+    Employee e2
+    ON
+        e2.managerId = e1.id
+WHERE
+    e2.managerId
+        IS NOT NULL
+GROUP BY
+    e1.name, e1.id  -- allow multiple name
+HAVING
+    COUNT(*) >= 5;
+```
+
+#### 14. [Confirmation Rate (1934)](https://leetcode.com/problems/confirmation-rate/)
+
+```sql
+
+```
+
+
 ## Contributing
 
 If you'd like to contribute, feel free to fork this repository and submit a pull request with your solutions or improvements. Make sure to follow the same format for consistency.
