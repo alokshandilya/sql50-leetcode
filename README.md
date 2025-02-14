@@ -3,8 +3,9 @@
 This repository contains solutions to the **Top SQL 50 Study Plan** from [LeetCode](https://leetcode.com/studyplan/top-sql-50/) using **PostgreSQL**. Each problem is linked to its corresponding LeetCode page, and solutions are provided in PostgreSQL syntax.
 
 ## Order of Execution
+
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/d87d4980-2c19-492e-85b1-56ed449ea3d4">
+    <img height="300px" src="https://github.com/user-attachments/assets/d87d4980-2c19-492e-85b1-56ed449ea3d4">
 </p>
 
 ## Select
@@ -361,6 +362,23 @@ GROUP BY
 ORDER BY
     percentage DESC,
     contest_id
+```
+
+#### 19. [Queries Quality and Percentage (1211)](https://leetcode.com/problems/queries-quality-and-percentage/description)
+
+```sql
+SELECT
+    query_name,
+    ROUND(
+        AVG(rating::decimal / position), 2
+    ) AS quality,
+    ROUND(
+        (COUNT(*) FILTER(WHERE rating < 3))::decimal * 100 / COUNT(*), 2
+    ) AS poor_query_percentage
+FROM
+    Queries
+GROUP BY
+    query_name
 ```
 
 ## Contributing
