@@ -381,6 +381,94 @@ GROUP BY
     query_name
 ```
 
+#### 20. [Monthly Transactions I (1193)](https://leetcode.com/problems/monthly-transactions-i/description)
+
+```sql
+SELECT
+    to_char(trans_date, 'YYYY-MM') AS month,
+    country,
+    COUNT(*) AS trans_count,
+    COUNT(*) FILTER(WHERE state='approved') AS approved_count,
+    COALESCE(
+        SUM(amount), 0
+    ) AS trans_total_amount,
+    COALESCE(
+        SUM(amount) FILTER(WHERE state='approved'), 0
+    ) AS approved_total_amount
+FROM
+    Transactions
+GROUP BY
+    month,
+    country
+```
+
+> #### 1. `to_char` Function
+>
+> - to format dates, timestamps, and intervals into human-readable strings. It's incredibly versatile, allowing you to customize the output precisely.
+>
+> ```sql
+> to_char(expression, format_string)
+> ```
+>
+> - `expression`: The date, timestamp, or interval value you want to format.
+> - `format_string`: A template string specifying how the output should look. This is where you control the format.
+>
+> **Format String Elements (Common Examples):**
+>
+> - `YYYY`: Four-digit year (e.g., 2023)
+> - `YY`: Two-digit year (e.g., 23)
+> - `MM`: Two-digit month (e.g., 01 for January, 12 for December)
+> - `Month`: Full month name (e.g., January)
+> - `Mon`: Abbreviated month name (e.g., Jan)
+> - `DD`: Two-digit day of the month (e.g., 01, 31)
+> - `Day`: Full day of the week (e.g., Monday)
+> - `Dy`: Abbreviated day of the week (e.g., Mon)
+> - `HH`: Hour (24-hour clock)
+> - `HH12`: Hour (12-hour clock)
+> - `MI`: Minutes
+> - `SS`: Seconds
+> - `MS`: Milliseconds
+> - `US`: Microseconds
+> - `TZ`: Time zone abbreviation (e.g., IST, PST)
+> - `CC`: Century
+>
+> **Examples of `to_char`:**
+>
+> ```sql
+> SELECT to_char(now(), 'YYYY-MM-DD HH24:MI:SS');  -- Current date and time
+> SELECT to_char(date '2024-03-15', 'Month DD, YYYY'); -- March 15, 2024
+> SELECT to_char(timestamp '2023-10-27 10:30:00', 'Day, Mon DD YYYY HH12:MI AM'); -- Friday, Oct 27 2023 10:30 AM
+> SELECT to_char(interval '2 years 3 months', 'YY years MM months'); -- 02 years 03 months
+> ```
+>
+> #### 2. `date_part` Function
+>
+> The `date_part` function extracts a specific component (like year, month, day, hour, etc.) from a date, timestamp, or interval.
+>
+> ```sql
+> date_part('field', source)
+> ```
+>
+> - `field`: The part of the date/time you want to extract (e.g., 'year', 'month', 'day', 'hour', 'minute', 'second', 'dow' (day of week), 'doy' (day of year), 'week', 'quarter').
+> - `source`: The date, timestamp, or interval value.
+>
+> **Examples of `date_part`:**
+>
+> ```sql
+> SELECT date_part('year', date '2024-03-15');  -- 2024
+> SELECT date_part('month', timestamp '2023-10-27 10:30:00'); -- 10
+> SELECT date_part('day', date '2024-03-15');   -- 15
+> SELECT date_part('dow', date '2024-03-15');  -- 5 (Friday, where Sunday = 0)
+> SELECT date_part('hour', timestamp '2023-10-27 10:30:00'); -- 10
+> SELECT date_part('week', date '2024-03-15'); -- 11 (week number of the year)
+> SELECT date_part('quarter', date '2024-05-15'); -- 2
+> ```
+>
+> **Key Differences and When to Use Which:**
+>
+> - **`to_char`:** Use this when you need to _format_ a date/time/interval into a specific string representation. You have fine-grained control over the output format. Think of it as converting a date/time into a _textual representation_.
+> - **`date_part`:** Use this when you need to _extract_ a specific component (a number) from a date/time/interval. It gives you a numeric value representing that part. Think of it as getting a _numerical value_ representing a date/time part.
+
 ## Contributing
 
 If you'd like to contribute, feel free to fork this repository and submit a pull request with your solutions or improvements. Make sure to follow the same format for consistency.
