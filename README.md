@@ -381,7 +381,7 @@ GROUP BY
     query_name
 ```
 
-#### 20. [Monthly Transactions I (1193)](https://leetcode.com/problems/monthly-transactions-i/description)
+#### 20. [Monthly Transactions I (1193)](https://leetcode.com/problems/monthly-transactions-i/description) :star2:
 
 ```sql
 SELECT
@@ -468,6 +468,68 @@ GROUP BY
 >
 > - **`to_char`:** Use this when you need to _format_ a date/time/interval into a specific string representation. You have fine-grained control over the output format. Think of it as converting a date/time into a _textual representation_.
 > - **`date_part`:** Use this when you need to _extract_ a specific component (a number) from a date/time/interval. It gives you a numeric value representing that part. Think of it as getting a _numerical value_ representing a date/time part.
+
+#### 21. [Immediate Food Delivery II (1174)](https://leetcode.com/problems/immediate-food-delivery-ii/description) :star2:
+
+```sql
+WITH first_order_cte AS (
+    SELECT
+        customer_id,
+        MIN(order_date) AS first_order
+    FROM
+        Delivery
+    GROUP BY
+        customer_id
+),
+
+immediate_order_cte AS (
+    SELECT
+        d.customer_id,
+        MIN(d.customer_pref_delivery_date) AS immediate_delivery
+    FROM
+        Delivery d
+    JOIN
+        first_order_cte fo
+        ON fo.customer_id = d.customer_id
+    GROUP BY
+        d.customer_id
+)
+
+SELECT
+    ROUND(
+        COUNT(*) FILTER(WHERE f.first_order = i.immediate_delivery)::decimal * 100
+        /
+        COUNT(f.customer_id), 2
+    ) AS immediate_percentage
+FROM
+    first_order_cte f
+JOIN
+    immediate_order_cte i
+    ON
+        i.customer_id = f.customer_id
+```
+
+> **Common Table Expressions (CTEs):**
+>
+> - CTEs are temporary result sets that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement.
+> - They help break down complex queries into smaller, more manageable parts.
+>
+> **Syntax:**
+>
+> ```sql
+> WITH cte_name (column1, column2, ...) AS (
+>     subquery
+> )
+> SELECT columns
+> FROM cte_name
+> WHERE condition;
+> ```
+>
+> - `cte_name`: The name of the Common Table Expression.
+> - `(column1, column2, ...)`: An optional list of column names for the CTE.
+> - `subquery`: The subquery that defines the CTE.
+> - `SELECT columns`: The main query that references the CTE.
+> - `WHERE condition`: An optional condition to filter the results.
 
 ## Contributing
 
