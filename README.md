@@ -2,6 +2,11 @@
 
 This repository contains solutions to the **Top SQL 50 Study Plan** from [LeetCode](https://leetcode.com/studyplan/top-sql-50/) using **PostgreSQL**. Each problem is linked to its corresponding LeetCode page, and solutions are provided in PostgreSQL syntax.
 
+## Order of Execution
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/d87d4980-2c19-492e-85b1-56ed449ea3d4">
+</p>
+
 ## Select
 
 #### 1. [Recyclable and Low Fat Products (1757)](https://leetcode.com/problems/recyclable-and-low-fat-products/)
