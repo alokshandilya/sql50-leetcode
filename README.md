@@ -509,6 +509,25 @@ JOIN
         i.customer_id = f.customer_id
 ```
 
+```sql
+SELECT
+    ROUND(
+        AVG((order_date = customer_pref_delivery_date)::int) * 100,
+        2
+    ) AS immediate_percentage
+FROM
+    Delivery
+WHERE (customer_id, order_date) IN (
+    SELECT
+        customer_id,
+        MIN(order_date)
+    FROM
+        Delivery
+    GROUP BY
+        customer_id
+)
+```
+
 > **Common Table Expressions (CTEs):**
 >
 > - CTEs are temporary result sets that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement.
