@@ -37,14 +37,14 @@ WHERE
 ```
 
 > **NOTE:** The `<>`, `!=` operator is used to compare two values and return `TRUE` if they are not equal, and `FALSE` otherwise.
-
-```sql
-SELECT
-    NULL <> 2
-        AS result;
-
--- output: NULL
-```
+>
+> ```sql
+> SELECT
+>     NULL <> 2
+>         AS result;
+>
+> -- output: NULL
+> ```
 
 #### 3. [Big Countries (595)](https://leetcode.com/problems/big-countries/)
 
