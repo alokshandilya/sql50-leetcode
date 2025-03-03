@@ -671,6 +671,42 @@ LEFT JOIN
 >
 > Intervals are particularly valuable in reporting, data analysis, and applications that need to track time differences or schedule recurring events.
 
+
+## Sorting and Grouping
+
+#### 23. [Number of Unique Subjects Taught by Each Teacher (2356)](https://leetcode.com/problems/number-of-unique-subjects-taught-by-each-teacher)
+
+```sql
+SELECT
+    teacher_id,
+    COUNT(DISTINCT subject_id)
+        AS cnt
+FROM
+    Teacher
+GROUP BY
+    teacher_id
+```
+
+#### 24. [User Activity for the Past 30 Days I (1141)](https://leetcode.com/problems/user-activity-for-the-past-30-days-i)
+
+```sql
+SELECT
+    activity_date
+        AS day,
+    COUNT(DISTINCT user_id)
+        AS active_users
+FROM
+    Activity
+WHERE
+    activity_date
+        BETWEEN
+            '2019-07-27'::date - INTERVAL '29 days'
+            AND
+            '2019-07-27'::date
+GROUP BY
+    activity_date
+```
+
 ## Contributing
 
 If you'd like to contribute, feel free to fork this repository and submit a pull request with your solutions or improvements. Make sure to follow the same format for consistency.
