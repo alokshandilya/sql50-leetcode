@@ -550,6 +550,127 @@ WHERE (customer_id, order_date) IN (
 > - `SELECT columns`: The main query that references the CTE.
 > - `WHERE condition`: An optional condition to filter the results.
 
+#### 22. [Game Play Analysis IV (550)](https://leetcode.com/problems/game-play-analysis-iv)
+
+```sql
+-- Step 1: Find the first login date for each player
+
+WITH FirstLogin AS (
+    SELECT
+        player_id,
+        MIN(event_date)
+            AS first_login
+    FROM
+        Activity
+    GROUP BY
+        player_id
+),
+
+-- Step 2: Check if the player logged in the day after their first login
+
+NextDayLogin AS (
+    SELECT
+        a.player_id
+    FROM
+        FirstLogin f
+    JOIN
+        Activity a
+        ON
+            a.player_id = f.player_id
+        AND
+            a.event_date = f.first_login + INTERVAL '1 DAY'
+)
+
+-- Step 3: Calculate the fraction of players who logged in the next day
+
+SELECT
+    ROUND(
+        COUNT(*) FILTER(WHERE f.player_id = n.player_id)::decimal / COUNT(*),
+        2
+    ) AS fraction
+FROM
+    FirstLogin f
+LEFT JOIN
+    NextDayLogin n
+    ON
+        f.player_id = n.player_id
+```
+
+> In PostgreSQL, the `INTERVAL` data type is used to store and manipulate periods of time. It's an extremely useful feature when you need to perform date and time calculations.
+>
+> Here's what you should know about PostgreSQL intervals:
+>
+> #### Basic Syntax
+>
+> ```sql
+> INTERVAL '1 day'
+> INTERVAL '2 hours 30 minutes'
+> INTERVAL '1 year 2 months 3 days'
+> ```
+>
+> #### Common Interval Units
+>
+> PostgreSQL supports these interval units:
+>
+> - `year`, `month`, `week`, `day`
+> - `hour`, `minute`, `second`, `millisecond`, `microsecond`
+> - Abbreviations like `yr`, `mon`, `h`, `min`, `sec` are also recognized
+>
+> #### Date/Time Arithmetic
+>
+> You can use intervals for date calculations:
+>
+> ```sql
+> -- Add 3 days to a date
+> SELECT date '2025-03-03' + INTERVAL '3 days';
+>
+> -- Subtract 1 month from a timestamp
+> SELECT now() - INTERVAL '1 month';
+>
+> -- Calculate time difference
+> SELECT age(timestamp '2025-03-03', timestamp '2025-01-01');
+> ```
+>
+> #### Extracting Parts
+>
+> You can extract specific parts from an interval:
+>
+> ```sql
+> SELECT EXTRACT(day FROM INTERVAL '1 year 2 months 3 days 4 hours');
+> -- Returns: 3
+> ```
+>
+> #### Interval Constants
+>
+> PostgreSQL allows shorthand notation:
+>
+> ```sql
+> '1 day'::interval
+> '2 hours'::interval
+> ```
+>
+> #### Practical Example
+>
+> ```sql
+> -- Find all records created in the last 7 days
+> SELECT * FROM records
+> WHERE created_at > now() - INTERVAL '7 days';
+> ```
+>
+> #### Functions
+>
+> PostgreSQL offers functions for interval manipulation:
+>
+> ```sql
+> -- Justify hours (convert hours to days when possible)
+> SELECT justify_hours(INTERVAL '30 hours'); -- Returns '1 day 6 hours'
+>
+> -- Justify days (convert days to months when possible)
+> SELECT justify_days(INTERVAL '40 days'); -- Returns '1 month 10 days'
+> ```
+>
+> Intervals are particularly valuable in reporting, data analysis, and applications that need to track time differences or schedule recurring events.
+
 ## Contributing
 
 If you'd like to contribute, feel free to fork this repository and submit a pull request with your solutions or improvements. Make sure to follow the same format for consistency.
